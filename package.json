@@ -1,0 +1,18 @@
+{
+  "name": "hook.io-logs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marak Squires <marak.squires@gmail.com",
+  "license": "MIT",
+  "description": "module that powers the hook.io platform's microservice [logs](https://hook.io/logs)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bigcompany/hook.io-logs.git"
+  },
+  "dependencies": {
+    "redis": "^0.12.1"
+  }
+}
