@@ -4,7 +4,7 @@ Node.js module that powers the hook.io platform's microservice [logs](https://ho
 
 ## Introduction
 
-This module is the component which [hook.io](http://hook.io) to manage small amounts of log entries that users can access with a simple API. Log entries are volatile and will expire over time.
+This module is the component which [hook.io](http://hook.io) uses manage small amounts of log entries that users can access with a simple API. Log entries are volatile and will expire over time.
 
 Right now this module is essentially a small wrapper around the `redis` module .
 
