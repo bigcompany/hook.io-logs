@@ -58,7 +58,7 @@ log.push = function push (endpoint, entry, cb) {
     // add entry to set
     client.rpush("/hook" + endpoint + "/logs", JSON.stringify(entry), function (err, res){
       if (err) {
-        throw err;
+        return cb(err);
       }
       // console.log('attempting to publish', "/hook" + endpoint + "/logs")
       logSubcriberClient.publish("/hook" + endpoint + "/logs", JSON.stringify(entry));
@@ -66,9 +66,9 @@ log.push = function push (endpoint, entry, cb) {
   };
 
   function removeLastEntry () {
-    client.rpop("/hook" + endpoint + "/logs", function (err, result){
+    client.lpop("/hook" + endpoint + "/logs", function (err, result){
       if (err) {
-        throw err;
+        return cb(err);
       }
       addEntry();
     });
