@@ -1,24 +1,26 @@
 var log = {};
 module['exports'] = log;
 
-//var config = require('../../config');
-
-var redis = require("redis"),
-    client = redis.createClient();
-
-var logSubcriberClient = redis.createClient();
-
+var logSubcriberClient;
 var MAX_LOGS_PER_HOOK = 50;
+var redis = require("redis");
+var client;
 
-// TODO: better error handling and client setup/teardown
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
+log.start = function (opts) {
 
-// TODO: better error handling and client setup/teardown
-logSubcriberClient.on("error", function (err) {
-    console.log("Error " + err);
-});
+  client = redis.createClient(opts.port, opts.host);
+  logSubcriberClient = redis.createClient(opts.port, opts.host);
+
+  // TODO: better error handling and client setup/teardown
+  client.on("error", function (err) {
+      console.log("Error " + err);
+  });
+
+  // TODO: better error handling and client setup/teardown
+  logSubcriberClient.on("error", function (err) {
+      console.log("Error " + err);
+  });
+}
 
 log.flush = function (endpoint, cb) {
   // TODO: removes all logs from the endpoint
