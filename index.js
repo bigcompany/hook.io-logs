@@ -23,9 +23,10 @@ log.start = function (opts) {
 }
 
 log.flush = function (endpoint, cb) {
-  // TODO: removes all logs from the endpoint
-  // TODO: run this every day or so to remove old logs
-  
+  client.del("/hook" + endpoint + "/logs", function(err, results){
+    // show logs in reverse order
+    return cb(err, results);
+  });
 };
 
 log.recent = function (endpoint, cb) {
