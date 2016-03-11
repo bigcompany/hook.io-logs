@@ -9,16 +9,19 @@ var client;
 log.start = function (opts) {
 
   client = redis.createClient(opts.port, opts.host);
+  client.auth(opts.password);
+
   logSubcriberClient = redis.createClient(opts.port, opts.host);
+  logSubcriberClient.auth(opts.password)
 
   // TODO: better error handling and client setup/teardown
   client.on("error", function (err) {
-      console.log("Error " + err);
+      console.log("Error: " + err);
   });
 
   // TODO: better error handling and client setup/teardown
   logSubcriberClient.on("error", function (err) {
-      console.log("Error " + err);
+      console.log("Error: " + err);
   });
 }
 
