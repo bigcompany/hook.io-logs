@@ -9,10 +9,16 @@ var client;
 log.start = function (opts) {
 
   client = redis.createClient(opts.port, opts.host);
-  client.auth(opts.password);
+
+  if (opts.password !== null) {
+    client.auth(opts.password);
+  }
 
   logSubcriberClient = redis.createClient(opts.port, opts.host);
-  logSubcriberClient.auth(opts.password)
+
+  if (opts.password !== null) {
+    logSubcriberClient.auth(opts.password)
+  }
 
   // TODO: better error handling and client setup/teardown
   client.on("error", function (err) {
@@ -34,9 +40,13 @@ log.flush = function (endpoint, cb) {
 
 log.recent = function (endpoint, cb) {
   // gets the most recent logs for endpoint
-  client.lrange("/hook" + endpoint + "/logs", 0, MAX_LOGS_PER_HOOK, function(err, results){
+  client.lrange("/hook" + endpoint + "/logs", 0, MAX_LOGS_PER_HOOK, function (err, results){
     // show logs in reverse order
     results = results.reverse();
+    // turn LRANGE entries back into JSON
+    results = results.map(function (item) {
+      return JSON.parse(item);
+    });
     return cb(err, results);
   });
 };
@@ -62,7 +72,7 @@ log.push = function push (endpoint, entry, cb) {
 
   function addEntry () {
     // add entry to set
-    client.rpush("/hook" + endpoint + "/logs", JSON.stringify(entry), function (err, res){
+    client.rpush("/hook" + endpoint + "/logs", JSON.stringify(entry), function (err, res) {
       if (err) {
         return cb(err);
       }
